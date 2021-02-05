@@ -102,7 +102,7 @@ class SignUp extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submit) {
             try {
-                String url = "jdbc:mysql://localhost:3306/info";
+                String url = "jdbc:mysql://127.0.0.1:3306/info";
                 String username = "root";
                 String password = "deepak";
                 Class.forName("com.mysql.jdbc.Driver");
@@ -123,6 +123,34 @@ class SignUp extends JFrame implements ActionListener {
                 E.printStackTrace();
             }
             System.out.println("working");
+
+            //retrieving data from table
+            System.out.println("trying to fetch data from table");
+
+            try{
+                String url = "jdbc:mysql://127.0.0.1:3306/info";
+                String username = "root";
+                String password = "deepak";
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(url, username, password);
+
+                String query = "select ID, name from management";
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery(query);
+                rs.next();
+                int id = rs.getInt("ID");
+                String name = rs.getString("Name");
+
+                System.out.println(id);
+                System.out.println(name);
+
+                System.out.println("data retrieved");
+                con.close();
+                System.out.println("closed");
+            }
+            catch (Exception E){
+                System.out.println(E);
+            }
         }
     }
 }
