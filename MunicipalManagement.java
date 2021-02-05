@@ -19,6 +19,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+frames to include :
+1. loading screen
+2. welcome screen new user or existing user
+3. login
+4. signup
+5. main screen for administrator
+6. main screen for general
+*/
+
+
 class SignUp extends JFrame implements ActionListener {
 
     JTextField tf1, tf2, tf3, tf4;
