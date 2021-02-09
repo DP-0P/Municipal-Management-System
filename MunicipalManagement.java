@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /*
 frames to include :
@@ -210,7 +211,7 @@ class LogIn extends JFrame implements ActionListener {
     JLabel wrongPass;
     JButton login;
     JTextField tf1;
-    JPasswordField p;
+    JPasswordField pf;
     JLabel l1, l2;
     ImageIcon sign = new ImageIcon("letter2.png");
 
@@ -224,7 +225,7 @@ class LogIn extends JFrame implements ActionListener {
         tf1 = new JTextField();
         tf1.setBackground(new Color(138, 222, 218));
         tf1.setBounds(65, 100, 200, 30);
-        //tf1.setPreferredSize(new DimensionUIResource(450, 50));
+        // tf1.setPreferredSize(new DimensionUIResource(450, 50));
 
         l2 = new JLabel("Password");
         l2.setBounds(65, 135, 200, 30);
@@ -233,8 +234,8 @@ class LogIn extends JFrame implements ActionListener {
         // pf.setBounds(65, 160, 200, 30);
         // //pf.setPreferredSize(new DimensionUIResource(450, 50));
 
-        p = new JPasswordField();
-        p.setBounds(65,160,200,30);
+        pf = new JPasswordField();
+        pf.setBounds(65, 160, 200, 30);
 
         login = new JButton("LogIn");
         login.setBounds(200, 360, 110, 30);
@@ -248,7 +249,7 @@ class LogIn extends JFrame implements ActionListener {
         this.add(l1);
         this.add(l2);
         this.add(tf1);
-        this.add(p);
+        this.add(pf);
         this.add(login);
         this.setLayout(null);
         this.setResizable(false);
@@ -265,8 +266,6 @@ class LogIn extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == login) {
             try {
-
-            
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/info", "root", "deepak");
 
@@ -280,60 +279,126 @@ class LogIn extends JFrame implements ActionListener {
                 resultSet = stm.executeQuery("SELECT ID FROM management;");
                 System.out.println("MyTable has " + rowCount + " row(s).");
 
-                //bala code aau thare lekhe mg
-                boolean logchk=true;
+                // bala code aau thare lekhe mg
+                ArrayList idArray = new ArrayList();
                 for (int i = 1; i <= rowCount; i++) {
                     while (resultSet.next()) {
-                        if (enteredID.equalsIgnoreCase(resultSet.getString("ID"))){
-                        } 
-                        logchk = true; 
-                        
-                        if(logchk){
-                            resultSet = stm.executeQuery("SELECT Password FROM management where ID='" + enteredID + "' ");
-                            resultSet.next();
-                            // String pas = resultSet.getString("Password");
-                            System.out.println(resultSet.getString("Password"));
-                            System.out.println(p.getText());
-                            // System.out.println(resultSet.getString("UserType"));
-                            String pass = resultSet.getString("Password");
-                            System.out.println(pass);
-                            //boolean logchk;
-                            if (pass.equals(p.getText())) {
-                                resultSet = stm.executeQuery("SELECT UserType FROM management where ID='" +enteredID + "' ");
-                                resultSet.next();
-                                System.out.println("workinng");
-                                if (resultSet.getString("UserType").equals("General")){
-                                    this.setVisible(false);
-                                    
-                                    new GeneralMainScreen(enteredID);
-                                }
-                                
-                                
-                                else if (resultSet.getString("UserType").equals("Administrator")){
-                                    this.setVisible(false);
 
-                                    new AdminMainScreen(enteredID);
-                                }
-                            } else if(!(pass.equals(p.getText()))){
-                                wrongPass.setText("Wrong Password");
-                                p.setText("");
-                            }
-                        }
-                        else if(!(enteredID.equalsIgnoreCase(resultSet.getString("ID")))){
-                            wrongPass.setText("Wrong UserID");
-                            tf1.setText("");
-                            p.setText("");
-                        }
-
+                        idArray.add(resultSet.getString("ID"));
                     }
                 }
+                for (int i = 0; i < rowCount; i++) {
+                    System.out.println(idArray.get(i));
+                    if (enteredID.equals(idArray.get(i))) {
+
+                        System.out.println("present");
+                        passCHK(enteredID);
+                    } else {
+                        wrongPass.setText("Wrong UserID");
+                        tf1.setText("");
+                    }
+                }
+
+                // for (int i = 1; i <= rowCount; i++) {
+                // while (resultSet.next()) {
+                // System.out.println(resultSet.getString("ID"));
+                // if (enteredID.equalsIgnoreCase(resultSet.getString("ID"))){
+                // resultSet = stm.executeQuery("SELECT Password FROM management where ID='"
+                // +enteredID + "' ");
+                // resultSet.next();
+                // String pas = resultSet.getString("Password");
+                // System.out.println("this is pass"+pas);
+                // char[] enteredpass = pf.getPassword();
+                // String enn = new String(enteredpass);
+                // System.out.println(enn);
+                // String passs=pf.getText();
+                // System.out.println(passs);
+
+                // //passCHK(ID)
+                // if(pf.getText().equals(pas)){
+
+                // logchk=true;
+                // System.out.println("300"+logchk);
+                // }
+                // System.out.println("cchk chk");
+                // if(!(pf.getText().equals(pas))){
+
+                // logchk=false;
+                // System.out.println("305"+logchk);
+                // }
+
+                // }
+                // else if (!(enteredID.equalsIgnoreCase(resultSet.getString("ID"))))
+                // {
+                // wrongPass.setText("Wrong UserID");
+                // tf1.setText("");
+                // System.out.println("307");
+                // pf.setText("");
+                // }
+                // }
+                // }
+
+                // System.out.println("320"+logchk);
+
+                // if(logchk){
+                // System.out.println("line 316 executed");
+                // resultSet = stm.executeQuery("SELECT UserType FROM management where ID='"
+                // +enteredID + "' ");
+                // resultSet.next();
+                // System.out.println(resultSet.getString("UserType"));
+                // if(resultSet.getString("UserType").equals("General"))
+                // {
                 // this.setVisible(false);
+                // new GeneralMainScreen(enteredID);
+                // }
+                // else if(resultSet.getString("UserType").equals("Administrator"))
+                // {
+                // this.setVisible(false);
+                // new AdminMainScreen(enteredID);
+                // }
+                // }
+                // if(!logchk){
+                // wrongPass.setText("Wrong Password");
+                // System.out.println("332");
+                // pf.setText("");
+                // //tf1.setText(enteredID);
+                // }
 
             } catch (Exception E) {
                 E.printStackTrace();
-                // JOptionPane.showMessageDialog(null, "Plz enter a unique id");
             }
         }
+    }
+
+    public void passCHK(String enteredID) {
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/info", "root", "deepak");
+            ResultSet resultSet;
+            Statement stm = con.createStatement();
+            resultSet = stm.executeQuery("SELECT Password FROM management where ID='" + enteredID + "' ");
+            resultSet.next();
+            String pas = resultSet.getString("Password");
+            System.out.println("this is pass" + pas);
+            System.out.println("entered pass"+pf.getText());
+            if(pf.getText().equals(pas)){
+                typeCHK(enteredID);
+            }
+            else{
+                wrongPass.setText("Wrong Password");
+                pf.setText("");
+
+            }
+
+
+        } catch (Exception e) {
+
+        }
+    }
+    public void typeCHK (String enteredID){
+
+
     }
 
 }
@@ -341,6 +406,7 @@ class LogIn extends JFrame implements ActionListener {
 class GeneralMainScreen extends JFrame implements ActionListener {
     JButton insert, display;
     String ID;
+
     GeneralMainScreen(String id) {
 
         ID = id;
@@ -375,7 +441,6 @@ class GeneralMainScreen extends JFrame implements ActionListener {
             this.setVisible(false);
             new adminDisplay(ID);
         }
-        
 
     }
 }
@@ -430,7 +495,7 @@ class adminEdit extends JFrame implements ActionListener {
     String id;
     JTextField tf1, tf2, tf3, tf4;
     JLabel l1, l2, l3, l4;
-    JButton save,back;
+    JButton save, back;
 
     adminEdit(String ID) {
         id = ID;
@@ -505,14 +570,16 @@ class adminEdit extends JFrame implements ActionListener {
                 Connection con = DriverManager.getConnection(url, username, password);
                 Statement stm = con.createStatement();
 
-                String sql = "UPDATE management SET Occupation = '" + tf1.getText() + "' , DOB='" + tf2.getText()+ "' , FamilyType='" + tf3.getText() + "' , Status='" + tf4.getText() + "'where ID='" + id + "';";
-               stm.executeUpdate(sql);
+                String sql = "UPDATE management SET Occupation = '" + tf1.getText() + "' , DOB='" + tf2.getText()
+                        + "' , FamilyType='" + tf3.getText() + "' , Status='" + tf4.getText() + "'where ID='" + id
+                        + "';";
+                stm.executeUpdate(sql);
             } catch (Exception E) {
                 System.out.println(E);
             }
         }
 
-        if(e.getSource()==back){
+        if (e.getSource() == back) {
             this.setVisible(false);
             new AdminMainScreen(id);
         }
@@ -629,9 +696,9 @@ class adminDisplay extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==back){
+        if (e.getSource() == back) {
             this.setVisible(false);
-           new AdminMainScreen(ID);
+            new AdminMainScreen(ID);
         }
 
     }
@@ -639,8 +706,8 @@ class adminDisplay extends JFrame implements ActionListener {
 
 class MunicipalManagement {
     public static void main(String[] args) {
-        //new LogIn();
+        new LogIn();
         // new adminInsert("12345", "yoo");
-       new SignUp();
+        // new SignUp();
     }
 }
