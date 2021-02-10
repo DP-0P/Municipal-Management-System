@@ -279,90 +279,50 @@ class LogIn extends JFrame implements ActionListener {
                 resultSet = stm.executeQuery("SELECT ID FROM management;");
                 System.out.println("MyTable has " + rowCount + " row(s).");
 
-                // bala code aau thare lekhe mg
-                ArrayList idArray = new ArrayList();
+                boolean logchk = false;
+                String retrievepass = "";
                 for (int i = 1; i <= rowCount; i++) {
-                    while (resultSet.next()) {
+                    while (resultSet.next()){
+                        if (enteredID.equals(resultSet.getString("ID"))) {
 
-                        idArray.add(resultSet.getString("ID"));
+                            System.out.println("present");
+                            resultSet = stm.executeQuery("SELECT Password FROM management where ID='" + enteredID + "' ");
+                            resultSet.next();
+                            retrievepass = resultSet.getString("Password");
+                            logchk = true;
+                            break;
+    
+                        }
+                    }
+                        
+
+                }
+                System.out.println(logchk);
+                if (logchk) {
+                    if (retrievepass.equals(pf.getText())) {
+                        resultSet = stm.executeQuery("SELECT UserType FROM management where ID='" + enteredID + "' ");
+                        resultSet.next();
+
+                        if (resultSet.getString("UserType").equals("General")) {
+                            this.setVisible(false);
+                            new GeneralMainScreen(enteredID);
+                        } else if (resultSet.getString("UserType").equals("Administrator")) {
+                            this.setVisible(false);
+                            new AdminMainScreen(enteredID);
+                        }
+                    }
+                    else{
+                        wrongPass.setText("Password is wrong");
+                        pf.setText("");
                     }
                 }
-                for (int i = 0; i < rowCount; i++) {
-                    System.out.println(idArray.get(i));
-                    if (enteredID.equals(idArray.get(i))) {
 
-                        System.out.println("present");
-                        passCHK(enteredID);
-                    } else {
-                        wrongPass.setText("Wrong UserID");
+                else{
+                    wrongPass.setText("UserID is wrong");
+                        pf.setText("");
                         tf1.setText("");
-                    }
                 }
-
-                // for (int i = 1; i <= rowCount; i++) {
-                // while (resultSet.next()) {
-                // System.out.println(resultSet.getString("ID"));
-                // if (enteredID.equalsIgnoreCase(resultSet.getString("ID"))){
-                // resultSet = stm.executeQuery("SELECT Password FROM management where ID='"
-                // +enteredID + "' ");
-                // resultSet.next();
-                // String pas = resultSet.getString("Password");
-                // System.out.println("this is pass"+pas);
-                // char[] enteredpass = pf.getPassword();
-                // String enn = new String(enteredpass);
-                // System.out.println(enn);
-                // String passs=pf.getText();
-                // System.out.println(passs);
-
-                // //passCHK(ID)
-                // if(pf.getText().equals(pas)){
-
-                // logchk=true;
-                // System.out.println("300"+logchk);
-                // }
-                // System.out.println("cchk chk");
-                // if(!(pf.getText().equals(pas))){
-
-                // logchk=false;
-                // System.out.println("305"+logchk);
-                // }
-
-                // }
-                // else if (!(enteredID.equalsIgnoreCase(resultSet.getString("ID"))))
-                // {
-                // wrongPass.setText("Wrong UserID");
-                // tf1.setText("");
-                // System.out.println("307");
-                // pf.setText("");
-                // }
-                // }
-                // }
-
-                // System.out.println("320"+logchk);
-
-                // if(logchk){
-                // System.out.println("line 316 executed");
-                // resultSet = stm.executeQuery("SELECT UserType FROM management where ID='"
-                // +enteredID + "' ");
-                // resultSet.next();
-                // System.out.println(resultSet.getString("UserType"));
-                // if(resultSet.getString("UserType").equals("General"))
-                // {
-                // this.setVisible(false);
-                // new GeneralMainScreen(enteredID);
-                // }
-                // else if(resultSet.getString("UserType").equals("Administrator"))
-                // {
-                // this.setVisible(false);
-                // new AdminMainScreen(enteredID);
-                // }
-                // }
-                // if(!logchk){
-                // wrongPass.setText("Wrong Password");
-                // System.out.println("332");
-                // pf.setText("");
-                // //tf1.setText(enteredID);
-                // }
+                
 
             } catch (Exception E) {
                 E.printStackTrace();
@@ -370,42 +330,12 @@ class LogIn extends JFrame implements ActionListener {
         }
     }
 
-    public void passCHK(String enteredID) {
-        try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/info", "root", "deepak");
-            ResultSet resultSet;
-            Statement stm = con.createStatement();
-            resultSet = stm.executeQuery("SELECT Password FROM management where ID='" + enteredID + "' ");
-            resultSet.next();
-            String pas = resultSet.getString("Password");
-            System.out.println("this is pass" + pas);
-            System.out.println("entered pass"+pf.getText());
-            if(pf.getText().equals(pas)){
-                typeCHK(enteredID);
-            }
-            else{
-                wrongPass.setText("Wrong Password");
-                pf.setText("");
-
-            }
-
-
-        } catch (Exception e) {
-
-        }
-    }
-    public void typeCHK (String enteredID){
-
-
-    }
-
 }
 
 class GeneralMainScreen extends JFrame implements ActionListener {
-    JButton insert, display;
+    JButton edit, display, back;
     String ID;
+    JLabel editmsg;
 
     GeneralMainScreen(String id) {
 
@@ -414,16 +344,26 @@ class GeneralMainScreen extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.setTitle("Municipal Management System");
 
-        insert = new JButton("insert");
-        insert.setBounds(200, 360, 110, 30);
-        insert.addActionListener(this);
+        edit = new JButton("Edit");
+        edit.setBounds(200, 360, 110, 30);
+        edit.addActionListener(this);
 
         display = new JButton("display");
         display.setBounds(200, 320, 110, 30);
         display.addActionListener(this);
 
+        back = new JButton("Back");
+        back.setBounds(75, 360, 110, 30);
+        back.addActionListener(this);
+
+        editmsg = new JLabel();
+        editmsg.setBounds(75, 100, 300, 300);
+        editmsg.setForeground(new Color(23, 212, 212));
+
+        this.add(editmsg);
+        this.add(back);
         this.add(display);
-        this.add(insert);
+        this.add(edit);
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(450, 450);
@@ -439,14 +379,135 @@ class GeneralMainScreen extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == display) {
             this.setVisible(false);
-            new adminDisplay(ID);
+            new generalDisplay(ID);
         }
+
+        if(e.getSource()==back){
+            this.setVisible(false);
+            new LogIn();
+        }
+        if(e.getSource()==edit)
+        editmsg.setText("Only users of Admin Type can edit their data");
 
     }
 }
+class generalDisplay extends JFrame implements ActionListener{
 
+    JButton back;
+    String ID;
+    ResultSet rs;
+    Statement stm;
+    Connection con;
+    JLabel labelID, labelNAME, labelPASS, labelUSERTYPE, labelOCCUPATION, labelDOB, labelFAMILY, labelSTATUS;
+
+    generalDisplay(String id) {
+        ID = id;
+
+        labelID = new JLabel();
+        labelID.setBounds(65, 70, 200, 30);
+        labelID.setForeground(new Color(23, 212, 212));
+
+        labelNAME = new JLabel();
+        labelNAME.setBounds(65, 80, 200, 30);
+        labelNAME.setForeground(new Color(23, 212, 212));
+
+        labelPASS = new JLabel();
+        labelPASS.setBounds(65, 90, 200, 30);
+        labelPASS.setForeground(new Color(23, 212, 212));
+
+        labelUSERTYPE = new JLabel();
+        labelUSERTYPE.setBounds(65, 100, 200, 30);
+        labelUSERTYPE.setForeground(new Color(23, 212, 212));
+
+        labelOCCUPATION = new JLabel();
+        labelOCCUPATION.setBounds(65, 110, 200, 30);
+        labelOCCUPATION.setForeground(new Color(23, 212, 212));
+
+        labelDOB = new JLabel();
+        labelDOB.setBounds(65, 120, 200, 30);
+        labelDOB.setForeground(new Color(23, 212, 212));
+
+        labelFAMILY = new JLabel();
+        labelFAMILY.setBounds(65, 130, 200, 30);
+        labelFAMILY.setForeground(new Color(23, 212, 212));
+
+        labelSTATUS = new JLabel();
+        labelSTATUS.setBounds(65, 140, 200, 30);
+        labelSTATUS.setForeground(new Color(23, 212, 212));
+
+        back = new JButton("Back");
+        back.setBounds(200, 360, 110, 30);
+        back.addActionListener(this);
+
+        this.add(back);
+        this.add(labelID);
+        this.add(labelNAME);
+        this.add(labelPASS);
+        this.add(labelUSERTYPE);
+        this.add(labelOCCUPATION);
+        this.add(labelDOB);
+        this.add(labelFAMILY);
+        this.add(labelSTATUS);
+
+        this.setLayout(null);
+        this.setResizable(false);
+        this.setSize(450, 450);
+        this.setVisible(true);
+        this.getContentPane().setBackground(new Color(3, 17, 38));
+        ImageIcon icon = new ImageIcon("icon.jpg");
+        this.setIconImage(icon.getImage());
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        try {
+            labelID.setText("UserID = " + ID);
+            // Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/info", "root", "deepak");
+            stm = con.createStatement();
+
+            rs = stm.executeQuery("SELECT Name FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelNAME.setText("Name = " + rs.getString("Name"));
+
+            rs = stm.executeQuery("SELECT UserType FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelUSERTYPE.setText("User Type = " + rs.getString("UserType"));
+
+            rs = stm.executeQuery("SELECT Occupation FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelOCCUPATION.setText("Occupation = " + rs.getString("Occupation"));
+
+            rs = stm.executeQuery("SELECT DOB FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelDOB.setText("Date Of Birth = " + rs.getString("DOB"));
+
+            rs = stm.executeQuery("SELECT FamilyType FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelFAMILY.setText("Family Type = " + rs.getString("FamilyType"));
+
+            rs = stm.executeQuery("SELECT Password FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelPASS.setText("Password = " + rs.getString("Password"));
+
+            rs = stm.executeQuery("SELECT Status FROM management where ID='" + ID + "' ");
+            rs.next();
+            labelSTATUS.setText("Status = " + rs.getString("Status"));
+
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == back) {
+            this.setVisible(false);
+            new GeneralMainScreen(ID);
+        }
+    }
+    
+}
 class AdminMainScreen extends JFrame implements ActionListener {
-    JButton edit, display;
+    JButton edit, display,back;
     String ID;
 
     AdminMainScreen(String id) {
@@ -462,9 +523,14 @@ class AdminMainScreen extends JFrame implements ActionListener {
         display.setBounds(200, 320, 110, 30);
         display.addActionListener(this);
 
+        back = new JButton("Back");
+        back.setBounds(75, 360, 110, 30);
+        back.addActionListener(this);
+
         this.add(display);
         this.add(edit);
 
+        this.add(back);
         this.setLayout(null);
         this.setResizable(false);
         this.setSize(450, 450);
@@ -485,6 +551,10 @@ class AdminMainScreen extends JFrame implements ActionListener {
         if (e.getSource() == edit) {
             this.setVisible(false);
             new adminEdit(ID);
+        }
+        if(e.getSource()==back){
+            this.setVisible(false);
+            new LogIn();
         }
 
     }
