@@ -1,4 +1,4 @@
-# GUI Project
+# **JAVA GUI Project**
 
 ### Loading Screen:
 
