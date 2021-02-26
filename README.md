@@ -25,3 +25,4 @@ General User Main Screen:
 ![Screenshot (492)](https://user-images.githubusercontent.com/60617347/109338768-b4435c00-788c-11eb-93b9-2ad9264045f9.png)
 
 
+### `Dependecies:`
