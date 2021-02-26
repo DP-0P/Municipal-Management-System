@@ -1,6 +1,6 @@
 # GUI Project
 
-Loading Screen:
+##### Loading Screen:
 
 ![Screenshot (487)](https://user-images.githubusercontent.com/60617347/108509171-ea0fa000-72e2-11eb-8b44-b61bf920ca02.png)
 
@@ -25,7 +25,7 @@ General User Main Screen:
 ![Screenshot (492)](https://user-images.githubusercontent.com/60617347/109338768-b4435c00-788c-11eb-93b9-2ad9264045f9.png)
 
 
-### **Dependecies:**
+## **Dependecies:**
 
 -
 -
