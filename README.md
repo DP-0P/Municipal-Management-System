@@ -28,9 +28,11 @@ User Deleted:
 
 ![Screenshot (495)](https://user-images.githubusercontent.com/60617347/114370492-29e55c00-9b9d-11eb-8784-c0bd1e7797f1.png)
 
-
+Admin Edit Screen:
 
 ![Screenshot (497)](https://user-images.githubusercontent.com/60617347/114370564-3f5a8600-9b9d-11eb-9a15-68e0f1d767c0.png)
+
+Admin Details:
 
 ![Screenshot (498)](https://user-images.githubusercontent.com/60617347/114370601-4a151b00-9b9d-11eb-9f63-afed7ef381df.png)
 
