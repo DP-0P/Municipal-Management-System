@@ -24,7 +24,11 @@ General User Main Screen:
 
 ![Screenshot (492)](https://user-images.githubusercontent.com/60617347/109338768-b4435c00-788c-11eb-93b9-2ad9264045f9.png)
 
+User Deleted:
+
 ![Screenshot (495)](https://user-images.githubusercontent.com/60617347/114370492-29e55c00-9b9d-11eb-8784-c0bd1e7797f1.png)
+
+
 
 ![Screenshot (497)](https://user-images.githubusercontent.com/60617347/114370564-3f5a8600-9b9d-11eb-9a15-68e0f1d767c0.png)
 
