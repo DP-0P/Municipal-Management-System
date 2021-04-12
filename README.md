@@ -24,6 +24,15 @@ General User Main Screen:
 
 ![Screenshot (492)](https://user-images.githubusercontent.com/60617347/109338768-b4435c00-788c-11eb-93b9-2ad9264045f9.png)
 
+![Screenshot (495)](https://user-images.githubusercontent.com/60617347/114370492-29e55c00-9b9d-11eb-8784-c0bd1e7797f1.png)
+
+![Screenshot (497)](https://user-images.githubusercontent.com/60617347/114370564-3f5a8600-9b9d-11eb-9a15-68e0f1d767c0.png)
+
+![Screenshot (498)](https://user-images.githubusercontent.com/60617347/114370601-4a151b00-9b9d-11eb-9f63-afed7ef381df.png)
+
+![Screenshot (499)](https://user-images.githubusercontent.com/60617347/114370644-54cfb000-9b9d-11eb-9334-716e791b36cd.png)
+
+![Screenshot (500)](https://user-images.githubusercontent.com/60617347/114370680-5e591800-9b9d-11eb-9f8c-f1a3e149564b.png)
 
 
 
