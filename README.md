@@ -46,7 +46,4 @@ Admin Table Data:
 
 # **Dependecies:**
 
--
--
--
--
+- MySql connector needs to be added to the project referenced libraries.
